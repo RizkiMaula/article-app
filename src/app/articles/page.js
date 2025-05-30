@@ -52,25 +52,21 @@ export default async function Home({ searchParams }) {
       <>
         <div className="relative w-full h-[30rem] overflow-hidden">
           {/* Bar yang ada di atas */}
-          <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between bg-black h-14">
+          <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between h-14">
             <div className="flex items-center ml-4">
               <Image
                 src={logo}
                 alt="Logo"
                 width={102}
                 height={100}
-                className="w-auto h-8" // Sesuaikan ukuran logo
+                className="w-auto h-8"
               />
             </div>
 
-            {/* Bagian kanan untuk user */}
             <div className="flex items-center mr-4">
-              {/* Contoh avatar user (bisa diganti dengan gambar user) */}
               <div className="flex items-center justify-center w-8 h-8 mr-2 bg-gray-200 border-2 border-dashed rounded-full">
                 <span className="text-xs text-gray-500">U</span>
               </div>
-
-              {/* Ini nanti akan diganti dengan nama user yang login */}
               <span className="font-medium text-white">User</span>
             </div>
           </div>
@@ -90,7 +86,6 @@ export default async function Home({ searchParams }) {
             <div className="absolute inset-0 bg-[#2563EBDB] bg-opacity-30 mix-blend-multiply"></div>
           </div>
 
-          {/* Konten teks di atas background */}
           <div className="relative z-10 flex flex-col items-center justify-center h-full gap-3 px-4 text-center text-white">
             <h5 className="mb-2 text-xl font-semibold">Blog genzet</h5>
             <h1 className="max-w-3xl mb-4 text-4xl font-bold md:text-5xl">The Journal: Design Resource, Interviews, and Industry News</h1>
@@ -116,7 +111,7 @@ export default async function Home({ searchParams }) {
                 </SelectContent>
               </Select>
 
-              {/* Search Input with fixed icon */}
+              {/* Search Input */}
               <div className="relative w-full">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
