@@ -1,15 +1,15 @@
 'use server';
 
-import FilterBar from '../components/fragments/FilterBar.jsx';
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input.jsx';
 import Footer from '../components/fragments/Footer.jsx';
 import axios from 'axios';
-import { stripHTML, formatDate } from '../utils/stripHTML.js';
 import background from '../../assets/background.jpg';
 import logo from '../../assets/Logo.png';
 import Image from 'next/image';
+import Card from '../components/fragments/Card.jsx';
+import { Paginate } from '../components/fragments/Paginate.jsx';
+import { PageItem } from '../components/fragments/PageItem.jsx';
 
 export default async function Home({ searchParams }) {
   // ambil parameter url
@@ -144,62 +144,36 @@ export default async function Home({ searchParams }) {
             </h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-[80%]">
+              {/* card */}
               {articles?.data?.map((article) => (
-                <div
+                <Card
                   key={article.id}
-                  className="flex flex-col gap-3 p-4 transition-shadow rounded-lg hover:shadow-md"
-                >
-                  {article.imageUrl ? (
-                    <img
-                      className="object-cover w-full h-48 rounded-md"
-                      src={article.imageUrl}
-                      alt={article.title}
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center w-full h-48 bg-gray-200 border-2 border-dashed rounded-xl">
-                      <span className="text-gray-500">No Image</span>
-                    </div>
-                  )}
-                  <p className="text-sm text-gray-500">{formatDate(article.createdAt)}</p>
-                  <h2 className="text-lg font-bold text-justify line-clamp-2">{article.title}</h2>
-                  <p className="text-gray-700 line-clamp-3">{stripHTML(article.content)}</p>
-                  <div className="flex gap-3 mt-auto">
-                    <span className="px-3 py-1 text-xs text-blue-800 bg-blue-100 rounded-full">{article.category.name}</span>
-                  </div>
-                </div>
+                  title={article.title}
+                  category={article.category.name}
+                  keyId={article.id}
+                  image={article.imageUrl}
+                  content={article.content}
+                  createdAt={article.createdAt}
+                />
               ))}
             </div>
-            <Pagination className="mt-10">
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    href={`?page=${Math.max(1, page - 1)}`}
-                    aria-disabled={page <= 1}
-                    className={page <= 1 ? 'opacity-50 pointer-events-none' : ''}
-                  />
-                </PaginationItem>
-
-                {pageNumbers.map((pageNum) => (
-                  <PaginationItem key={pageNum}>
-                    <PaginationLink
-                      href={`?page=${pageNum}`}
-                      isActive={pageNum === page}
-                      className={pageNum === page ? 'bg-blue-500 text-white' : ''}
-                    >
-                      {pageNum}
-                    </PaginationLink>
-                  </PaginationItem>
-                ))}
-
-                <PaginationItem>
-                  <PaginationNext
-                    href={`?page=${Math.min(totalPages, page + 1)}`}
-                    aria-disabled={page >= totalPages}
-                    className={page >= totalPages ? 'opacity-50 pointer-events-none' : ''}
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+            <Paginate
+              prevLink={`?page=${Math.max(1, page - 1)}`}
+              nextLink={`?page=${Math.min(totalPages, page + 1)}`}
+              pageNumbers={
+                <>
+                  {pageNumbers.map((pageNum) => (
+                    <PageItem
+                      key={pageNum}
+                      currentPage={pageNum}
+                      activePage={page}
+                    />
+                  ))}
+                </>
+              }
+              page={page}
+              totalPages={totalPages}
+            />
           </main>
         </div>
         <Footer />
