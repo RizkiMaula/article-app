@@ -10,6 +10,7 @@ import Image from 'next/image';
 import Card from '../components/fragments/Card.jsx';
 import { Paginate } from '../components/fragments/Paginate.jsx';
 import { PageItem } from '../components/fragments/PageItem.jsx';
+import Link from 'next/link.js';
 
 export default async function Home({ searchParams }) {
   // ambil parameter url
@@ -146,15 +147,21 @@ export default async function Home({ searchParams }) {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-[80%]">
               {/* card */}
               {articles?.data?.map((article) => (
-                <Card
+                <Link
                   key={article.id}
-                  title={article.title}
-                  category={article.category.name}
-                  keyId={article.id}
-                  image={article.imageUrl}
-                  content={article.content}
-                  createdAt={article.createdAt}
-                />
+                  href={`/articles/${article.id}`}
+                  passHref
+                >
+                  <Card
+                    key={article.id}
+                    title={article.title}
+                    category={article.category.name}
+                    keyId={article.id}
+                    image={article.imageUrl}
+                    content={article.content}
+                    createdAt={article.createdAt}
+                  />
+                </Link>
               ))}
             </div>
             <Paginate
