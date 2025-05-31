@@ -10,12 +10,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Logo from '@/app/components/fragments/Logo';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Link from 'next/link';
 
 // Schema validasi dengan Zod
-const loginSchema = z.object({
+
+const registerSchema = z.object({
   username: z.string().min(1, 'Username field cannot be empty'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
+  role: z.string().min(1, 'Role must be selected'),
 });
 
 export default function Login() {
@@ -24,7 +27,7 @@ export default function Login() {
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const schema = loginSchema;
+  const schema = registerSchema;
   const {
     control,
     handleSubmit,
@@ -45,18 +48,15 @@ export default function Login() {
     setErrorMessage('');
 
     try {
-      const url = 'https://test-fe.mysellerpintar.com/api/auth/login';
+      const url = 'https://test-fe.mysellerpintar.com/api/auth/register';
 
       const response = await axios.post(url, data);
 
-      // Simpan token dan role di localStorage
-      localStorage.setItem('authToken', response.data.token);
-      localStorage.setItem('userRole', response.data.role || 'user');
-
       // Redirect ke halaman profil
-      router.push('/articles');
+      alert('Registration successful. Please log in.');
+      router.push('/auth/login');
     } catch (error) {
-      setErrorMessage(error.response?.data?.message || 'Login failed. Please check your credentials.');
+      setErrorMessage(error.response?.data?.message || 'Registration failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -148,6 +148,33 @@ export default function Login() {
               </div>
               {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
             </div>
+
+            {/* Role (hanya untuk register) */}
+
+            <div>
+              <Label htmlFor="role">Role</Label>
+              <Controller
+                name="role"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                  >
+                    <SelectTrigger className="mt-1">
+                      <SelectValue placeholder="Select your role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="Admin">Admin</SelectItem>
+                        <SelectItem value="User">User</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+              {errors.role && <p className="text-red-500 text-xs mt-1">{errors.role.message}</p>}
+            </div>
           </div>
 
           <div>
@@ -188,13 +215,13 @@ export default function Login() {
         </form>
 
         <div className="text-center flex items-center justify-center">
-          <p>Don't have an account? </p>
+          <p>Already have an account? </p>
           <Link
-            href="/auth/register"
+            href="/auth/login"
             className=" text-blue-600 hover:text-blue-500 underline"
           >
             {' '}
-            Register
+            Sign in
           </Link>
         </div>
       </div>
