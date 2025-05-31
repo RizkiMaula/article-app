@@ -50,7 +50,7 @@ export default function AuthForm({
                 type="text"
                 autoComplete="username"
                 {...registerUsername}
-                placeholder="Enter your username"
+                placeholder="Input username"
               />
               {errorUsername}
             </div>
@@ -64,7 +64,7 @@ export default function AuthForm({
                   type={showPassword ? 'text' : 'password'}
                   autoComplete="current-password"
                   {...registerPassword}
-                  placeholder="Enter your password"
+                  placeholder="Input Password"
                 />
                 <button
                   type="button"
