@@ -72,8 +72,8 @@ export default async function ArticleDetail({ params }) {
         <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
 
         <Image
-          width={1000}
-          height={1000}
+          width={1500}
+          height={1500}
           src={article.imageUrl}
           alt={article.title}
           className="rounded-xl w-full mb-6"
