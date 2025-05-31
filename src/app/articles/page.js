@@ -11,6 +11,7 @@ import Card from '../components/fragments/Card.jsx';
 import { Paginate } from '../components/fragments/Paginate.jsx';
 import { PageItem } from '../components/fragments/PageItem.jsx';
 import Link from 'next/link.js';
+import Header from '../components/fragments/Header.jsx';
 
 export default async function Home({ searchParams }) {
   // ambil parameter url
@@ -54,7 +55,7 @@ export default async function Home({ searchParams }) {
       <>
         <div className="relative w-full h-[30rem] overflow-hidden">
           {/* Bar yang ada di atas */}
-          <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between h-14">
+          {/* <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between h-14">
             <div className="flex items-center ml-4">
               <Image
                 src={logo}
@@ -71,10 +72,13 @@ export default async function Home({ searchParams }) {
               </div>
               <span className="font-medium text-white">User</span>
             </div>
-          </div>
+          </div> */}
+          <Header className="relative z-50" />
 
           {/* Background image dengan overlay */}
-          <div className="absolute inset-0">
+          <div className="absolute inset-0 z-0">
+            {' '}
+            {/* Tambahkan z-0 di sini */}
             <Image
               src={background}
               alt="Background"

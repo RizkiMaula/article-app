@@ -5,6 +5,7 @@ import NotFound from '@/app/not-found';
 import Footer from '@/app/components/fragments/Footer';
 import Card from '@/app/components/fragments/Card';
 import Link from 'next/link.js';
+import Header from '@/app/components/fragments/Header';
 
 export async function generateMetadata({ params }) {
   try {
@@ -56,13 +57,15 @@ export default async function ArticleDetail({ params }) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="border-b py-4 px-6 flex justify-between items-center">
+      {/* <header className="border-b py-4 px-6 flex justify-between items-center">
         <div className="text-blue-600 font-bold text-xl">Logoipsum</div>
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-sm font-medium">J</div>
           <span className="text-sm">James Dean</span>
         </div>
-      </header>
+      </header> */}
+
+      <Header />
 
       {/* Konten Artikel */}
       <main className="max-w-4xl mx-auto p-6">
