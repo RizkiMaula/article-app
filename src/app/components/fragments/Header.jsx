@@ -8,8 +8,9 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 import Logo from './Logo';
 import Link from 'next/link';
 import { LogOut } from 'lucide-react';
+import LogoWhite from './LogoWhite';
 
-export default function Header({ position = 'absolute', flexLogo = 'items-center' }) {
+export default function Header({ position = 'absolute', flexLogo = 'items-center', textColor = 'text-white', logo = <Logo /> }) {
   const [username, setUsername] = useState(null);
   const router = useRouter();
 
@@ -67,7 +68,7 @@ export default function Header({ position = 'absolute', flexLogo = 'items-center
         href="/"
         className="flex items-center gap-2"
       >
-        <Logo />
+        {logo}
       </Link>
       {/* User section */}
       <div className="flex items-center mr-4">
@@ -81,7 +82,7 @@ export default function Header({ position = 'absolute', flexLogo = 'items-center
           <HoverCard>
             <HoverCardTrigger asChild>
               <Button
-                className={`font-bold ${flexLogo} mr-4`}
+                className={`font-bold ${flexLogo} mr-4 ${textColor}`}
                 variant="link"
               >
                 {username}

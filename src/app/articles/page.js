@@ -12,9 +12,11 @@ import { Paginate } from '../components/fragments/Paginate.jsx';
 import { PageItem } from '../components/fragments/PageItem.jsx';
 import Link from 'next/link.js';
 import Header from '../components/fragments/Header.jsx';
+import { getPageNumbers } from '../utils/stripHtml.js';
 
 export default async function Home({ searchParams }) {
   // ambil parameter url
+
   const page = Number(searchParams.page) || 1;
   const limit = 9;
 
@@ -30,55 +32,17 @@ export default async function Home({ searchParams }) {
     // hitung total halaman
     const totalPages = Math.ceil(articles.total / limit);
 
-    // fungsi untuk menghasilkan nomor halaman yang ditampilkan
-    const getPageNumbers = () => {
-      const pages = [];
-      const maxVisiblePages = 5;
-
-      let startPage = Math.max(1, page - Math.floor(maxVisiblePages / 2));
-      const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-
-      if (endPage - startPage < maxVisiblePages - 1) {
-        startPage = Math.max(1, endPage - maxVisiblePages + 1);
-      }
-
-      for (let i = startPage; i <= endPage; i++) {
-        pages.push(i);
-      }
-
-      return pages;
-    };
-
-    const pageNumbers = getPageNumbers();
+    const pageNumbers = getPageNumbers({ page, totalPages });
 
     return (
       <>
-        <div className="relative w-full h-[30rem] overflow-hidden">
-          {/* Bar yang ada di atas */}
-          {/* <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between h-14">
-            <div className="flex items-center ml-4">
-              <Image
-                src={logo}
-                alt="Logo"
-                width={102}
-                height={100}
-                className="w-auto h-8"
-              />
-            </div>
+        <div className="fixed top-0 w-full z-50">
+          <Header />
+        </div>
 
-            <div className="flex items-center mr-4">
-              <div className="flex items-center justify-center w-8 h-8 mr-2 bg-gray-200 border-2 border-dashed rounded-full">
-                <span className="text-xs text-gray-500">U</span>
-              </div>
-              <span className="font-medium text-white">User</span>
-            </div>
-          </div> */}
-          <Header className="relative z-50" />
-
+        <div className="relative w-full h-[30rem] overflow-hidden pt-16">
           {/* Background image dengan overlay */}
-          <div className="absolute inset-0 z-0">
-            {' '}
-            {/* Tambahkan z-0 di sini */}
+          <div className="absolute inset-0">
             <Image
               src={background}
               alt="Background"
@@ -89,7 +53,7 @@ export default async function Home({ searchParams }) {
               className="opacity-100"
             />
             {/* Overlay biru muda */}
-            <div className="absolute inset-0 bg-[#2563EBDB] bg-opacity-30 mix-blend-multiply"></div>
+            <div className="absolute inset-0 bg-[#2563EBDB] bg-opacity-30 mix-blend-multiply pointer-events-none"></div>
           </div>
 
           <div className="relative z-10 flex flex-col items-center justify-center h-full gap-3 px-4 text-center text-white">

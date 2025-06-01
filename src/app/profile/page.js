@@ -51,28 +51,7 @@ export default function ProfilePage() {
 
   return (
     <div className="flex flex-col items-center justify-between min-h-screen bg-gray-100">
-      {/* <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between h-14">
-        <div className="flex items-center ml-4">
-          <Image
-            src={logo}
-            alt="Logo"
-            width={102}
-            height={100}
-            className="w-auto h-8"
-          />
-        </div>
-
-        <div className="flex items-center mr-4">
-          <div className="flex items-center justify-center w-8 h-8 mr-2 bg-gray-200 border-2 border-dashed rounded-full">
-            <span className="text-xs text-gray-500">U</span>
-          </div>
-          <span className="font-medium text-white">User</span>
-        </div>
-      </div> */}
-      <Header
-        position={`static`}
-        flexLogo="item-start"
-      />
+      <Header textColor="text-black" />
 
       <div className="bg-white p-6 rounded-lg shadow-md w-96">
         {/* Lingkaran huruf depan */}
