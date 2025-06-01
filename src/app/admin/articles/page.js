@@ -7,19 +7,29 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import axios from 'axios';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import Image from 'next/image';
+import { formatDateTime } from '@/app/utils/stripHtml';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import ArticleActions from '@/app/components/fragments/ArticleActions';
+import { Paginate } from '@/app/components/fragments/Paginate.jsx';
+import { PageItem } from '@/app/components/fragments/PageItem.jsx';
+import { getPageNumbers } from '@/app/utils/stripHtml';
 
-export default async function ArticlesPage() {
+export default async function ArticlesPage({ searchParams }) {
+  const page = Number(searchParams.page) || 1;
+  const limit = 10;
+
   try {
-    const response = await axios.get(`https://test-fe.mysellerpintar.com/api/articles`);
+    const response = await axios.get(`https://test-fe.mysellerpintar.com/api/articles?page=${page}&limit=${limit}`);
     const category = await axios.get('https://test-fe.mysellerpintar.com/api/categories?limit=100');
 
     // Akses data langsung dari response axios
     const articles = response.data;
     const categories = category.data;
 
-    console.log(`articles: ${articles?.data}`);
+    const totalPages = Math.ceil(articles.total / limit);
 
-    // const totalPages = Math.ceil(articles.total / limit);
+    const pageNumbers = getPageNumbers({ page, totalPages });
 
     return (
       <AuthGuard requiredRoles={['Admin']}>
@@ -27,7 +37,9 @@ export default async function ArticlesPage() {
           {/* Header Section */}
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold">Total Articles: {articles?.data?.length ?? 0}</h2>
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded">+ Add Articles</button>
+            <Link href="/admin/articles/add">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded">+ Add Articles</Button>
+            </Link>
           </div>
           {/* Filter & Search */}
           <div className="flex items-center gap-4 mb-4">
@@ -82,28 +94,32 @@ export default async function ArticlesPage() {
                   </TableCell>
                   <TableCell>{article.title}</TableCell>
                   <TableCell>{article.category.name}</TableCell>
-                  <TableCell>{article.createdAt}</TableCell>
+                  <TableCell>{formatDateTime(article.createdAt)}</TableCell>
                   <TableCell>
-                    <div className="flex gap-2">
-                      <a href={`/admin/articles/${article.id}`}>Edit</a>
-                      <a href={`/admin/articles/${article.id}`}>Preview</a>
-                      <a href={`/admin/articles/${article.id}`}>Delete</a>
-                    </div>
+                    <ArticleActions article={article} />
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-          ;{/* Pagination */}
-          <div className="flex justify-between items-center mt-6">
-            <button className="text-sm px-3 py-1 rounded border border-gray-300 bg-white hover:bg-gray-100">&lt; Previous</button>
-            <div className="flex gap-2">
-              <button className="text-sm px-3 py-1 rounded border border-gray-300 bg-white hover:bg-gray-100">1</button>
-              <button className="text-sm px-3 py-1 rounded border border-gray-300 bg-blue-600 text-white">2</button>
-              <span className="text-sm px-3 py-1 text-gray-500">...</span>
-              <button className="text-sm px-3 py-1 rounded border border-gray-300 bg-white hover:bg-gray-100">Next &gt;</button>
-            </div>
-          </div>
+          {/* Pagination */}
+          <Paginate
+            prevLink={`?page=${Math.max(1, page - 1)}`}
+            nextLink={`?page=${Math.min(totalPages, page + 1)}`}
+            pageNumbers={
+              <>
+                {pageNumbers.map((pageNum) => (
+                  <PageItem
+                    key={pageNum}
+                    currentPage={pageNum}
+                    activePage={page}
+                  />
+                ))}
+              </>
+            }
+            page={page}
+            totalPages={totalPages}
+          />
         </div>
       </AuthGuard>
     );

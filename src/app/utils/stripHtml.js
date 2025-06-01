@@ -11,6 +11,18 @@ export function formatDate(dateString) {
   });
 }
 
+export function formatDateTime(dateString) {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    hour12: false,
+  });
+}
+
 export const getPageNumbers = ({ page, totalPages, maxVisiblePages = 5 }) => {
   const pages = [];
 

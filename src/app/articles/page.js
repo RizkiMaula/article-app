@@ -5,7 +5,6 @@ import { Input } from '@/components/ui/input.jsx';
 import Footer from '../components/fragments/Footer.jsx';
 import axios from 'axios';
 import background from '../../assets/background.jpg';
-import logo from '../../assets/Logo.png';
 import Image from 'next/image';
 import Card from '../components/fragments/Card.jsx';
 import { Paginate } from '../components/fragments/Paginate.jsx';
